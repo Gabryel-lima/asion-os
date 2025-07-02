@@ -1,0 +1,70 @@
+# ------------------------------------------------------------
+#  asion-os ─ .gitignore
+# ------------------------------------------------------------
+#  Mantém o repositório enxuto: ignora toolchains construídos,
+#  diretórios de build, artefatos (ELF/bin/ISO), tarballs,
+#  cache de IDEs, logs, etc.
+# ------------------------------------------------------------
+
+# ─── Build & toolchain ──────────────────────────────────────
+/build*/
+/src/build*/
+/*.o
+*.o
+*.a
+*.so
+*.out
+*.elf
+*.bin
+*.img
+*.iso
+*.map
+*.lst
+
+# ─── Kernel/ISO gerados ────────────────────────────────────
+asion.bin
+kernel.elf
+iso/boot/kernel.elf
+asion-os.iso
+*.qcow2
+*.vdi
+
+# ─── Fontes externos extraídos (binutils/gcc) ──────────────
+src/binutils-*/
+src/gcc-*/
+
+# ─── Tarballs e arquivamentos ──────────────────────────────
+*.tar
+*.tar.*
+*.tgz
+*.txz
+*.zip
+*.gz
+*.xz
+*.bz2
+
+# ─── Logs e dumps ──────────────────────────────────────────
+*.log
+*.log.*
+*.dmp
+core
+core.*
+
+# ─── IDE / Editor temporaries ──────────────────────────────
+.vscode/
+.idea/
+*.code-workspace
+*~
+*.swp
+*.swo
+
+# ─── Python / misc cache ───────────────────────────────────
+__pycache__/
+*.py[cod]
+
+# ─── macOS / Windows artefacts ─────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── Toolchain local ───────────────────────────────────────
+opt/
