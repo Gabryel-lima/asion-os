@@ -9,23 +9,44 @@ SRC_DIR="$PROJECT_ROOT/src"
 mkdir -p "$SRC_DIR"
 cd "$SRC_DIR"
 
+# Limpeza total dos artefatos anteriores
+CLEAN_PATHS=(
+    "$SRC_DIR/binutils-2.42" "$SRC_DIR/binutils-2.42.tar.xz"
+    "$SRC_DIR/gcc-14.1.0" "$SRC_DIR/gcc-14.1.0.tar.xz"
+    "$SRC_DIR/build-binutils" "$SRC_DIR/build-gcc"
+    "$PROJECT_ROOT/opt/cross"
+)
+
+echo "⚠️  Limpando artefatos anteriores..."
+for path in "${CLEAN_PATHS[@]}"; do
+    if [[ -e "$path" ]]; then
+        echo "Removendo $path..."
+        rm -rf "$path"
+    fi
+done
+
 baixar_e_extrair() {
     local TAR="$1"
     local URL="$2"
     local DIR="$3"
 
+    # Baixar se o tarball NÃO existir
     if [[ ! -f "$TAR" ]]; then
         echo "↓ Baixando $TAR..."
         wget -q --show-progress "$URL"
     fi
 
+    # Tentar extrair; se falhar, baixar novamente
     if [[ ! -d "$DIR" ]]; then
         echo "↪ Extraindo $TAR..."
         if ! tar -xf "$TAR"; then
             echo "✗ Extração falhou, removendo $TAR e tentando novamente..."
             rm -f "$TAR"
             wget -q --show-progress "$URL"
-            tar -xf "$TAR"
+            if ! tar -xf "$TAR"; then
+                echo "✗ Extração falhou novamente. Abortando."
+                exit 1
+            fi
         fi
     else
         echo "✓ Diretório $DIR já existe; pulando extração."
