@@ -9,6 +9,29 @@ SRC_DIR="$PROJECT_ROOT/src"
 mkdir -p "$SRC_DIR"
 cd "$SRC_DIR"
 
+baixar_e_extrair() {
+    local TAR="$1"
+    local URL="$2"
+    local DIR="$3"
+
+    if [[ ! -f "$TAR" ]]; then
+        echo "↓ Baixando $TAR..."
+        wget -q --show-progress "$URL"
+    fi
+
+    if [[ ! -d "$DIR" ]]; then
+        echo "↪ Extraindo $TAR..."
+        if ! tar -xf "$TAR"; then
+            echo "✗ Extração falhou, removendo $TAR e tentando novamente..."
+            rm -f "$TAR"
+            wget -q --show-progress "$URL"
+            tar -xf "$TAR"
+        fi
+    else
+        echo "✓ Diretório $DIR já existe; pulando extração."
+    fi
+}
+
 ########################
 # 1) Binutils 2.42
 ########################
@@ -17,21 +40,7 @@ BINUTILS_TAR="binutils-${BINUTILS_VER}.tar.xz"
 BINUTILS_URL="https://ftp.gnu.org/gnu/binutils/${BINUTILS_TAR}"
 BINUTILS_DIR="binutils-${BINUTILS_VER}"
 
-# Baixar se o tarball NÃO existir
-if [[ ! -f "$BINUTILS_TAR" ]]; then
-    echo "↓ Baixando $BINUTILS_TAR..."
-    wget -q --show-progress "$BINUTILS_URL"
-else
-    echo "✓ Tarball $BINUTILS_TAR já existe; pulando download."
-fi
-
-# Extrair se o diretório NÃO existir
-if [[ ! -d "$BINUTILS_DIR" ]]; then
-    echo "↪ Extraindo $BINUTILS_TAR..."
-    tar -xf "$BINUTILS_TAR"
-else
-    echo "✓ Diretório $BINUTILS_DIR já existe; pulando extração."
-fi
+baixar_e_extrair "$BINUTILS_TAR" "$BINUTILS_URL" "$BINUTILS_DIR"
 
 ########################
 # 2) GCC 14.1.0
@@ -41,19 +50,7 @@ GCC_TAR="gcc-${GCC_VER}.tar.xz"
 GCC_URL="https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VER}/${GCC_TAR}"
 GCC_DIR="gcc-${GCC_VER}"
 
-if [[ ! -f "$GCC_TAR" ]]; then
-    echo "↓ Baixando $GCC_TAR..."
-    wget -q --show-progress "$GCC_URL"
-else
-    echo "✓ Tarball $GCC_TAR já existe; pulando download."
-fi
-
-if [[ ! -d "$GCC_DIR" ]]; then
-    echo "↪ Extraindo $GCC_TAR..."
-    tar -xf "$GCC_TAR"
-else
-    echo "✓ Diretório $GCC_DIR já existe; pulando extração."
-fi
+baixar_e_extrair "$GCC_TAR" "$GCC_URL" "$GCC_DIR"
 
 PROJECT_ROOT="/home/gabry/Documentos/projects/asion-os"
 PREFIX="$PROJECT_ROOT/opt/cross"
