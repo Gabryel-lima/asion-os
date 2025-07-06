@@ -50,7 +50,7 @@ Este **README** descreve um percurso incremental para construir (e aprender) um 
 
 | Fase                   | Meta técnica                                                                | Recursos sugeridos                                                      |
 | ---------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| **0. Ambiente**        | Instalar toolchain cruzada, NASM, QEMU e GRUB.                              | OSDev Wiki — *GCC Cross‑Compiler*                                       |
+| **0. Ambiente ✅**        | Instalar toolchain cruzada, NASM, QEMU e GRUB.                              | OSDev Wiki — *GCC Cross‑Compiler*                                       |
 | **1. Bare Bones**      | Imprimir "Hello, kernel world!" na VGA; ISO bootável.                       | [https://wiki.osdev.org/Bare\_Bones](https://wiki.osdev.org/Bare_Bones) |
 | **2. GDT & IDT**       | Configurar Tabela Global de Descritores e vetores de interrupção.           | *JamesM’s Kernel Dev – Cap. 3–5*                                        |
 | **3. Paging**          | Ativar paginação de identidade + *Higher‑Half Kernel* (0xFFFFFFFF80000000). | OSDev: *Paging*                                                         |
